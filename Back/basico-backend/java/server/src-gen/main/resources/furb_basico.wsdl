@@ -1,0 +1,2174 @@
+<wsdl:definitions name="basico"
+      targetNamespace="http://www.senior.com.br/furb/basico"
+      xmlns="http://www.senior.com.br/furb/basico"
+      xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+      xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+      xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+      xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+      xmlns:http="http://schemas.xmlsoap.org/wsdl/http/">
+    
+    <version number="${version}" />
+    
+    <wsdl:types>
+        <xsd:schema
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns="http://www.senior.com.br/furb/basico"
+            targetNamespace="http://www.senior.com.br/furb/basico"
+            elementFormDefault="qualified">
+            
+            <xsd:attribute name="deprecated" type="xsd:string" default=""/>
+            <xsd:attribute name="anonymous" type="xsd:boolean" default="false"/>
+            
+            <xsd:attribute name="i18n" type="xsd:boolean" default="false"/>
+            
+            <!-- Public types -->
+            <xsd:complexType name="professor">
+                <xsd:sequence>
+                    <xsd:element name="id" type="xsd:uuid" minOccurs="0" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="nome" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="dataNascimento" type="xsd:date" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="dataContratacao" type="xsd:date" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="salario" type="xsd:double" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <!-- collection wrapper for turmas -->
+                    <xsd:element name="turmas" minOccurs="1" maxOccurs="1">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="item" type="turma" minOccurs="1" maxOccurs="unbounded"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="aluno">
+                <xsd:sequence>
+                    <xsd:element name="id" type="xsd:uuid" minOccurs="0" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="nome" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="dataNascimento" type="xsd:date" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="dataInicio" type="xsd:date" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <!-- collection wrapper for notas -->
+                    <xsd:element name="notas" minOccurs="1" maxOccurs="1">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="item" type="avaliacao" minOccurs="1" maxOccurs="unbounded"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="turma">
+                <xsd:sequence>
+                    <xsd:element name="id" type="xsd:uuid" minOccurs="0" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="descTurma" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="horario" type="xsd:time" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="valorMensalidade" type="xsd:double" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="limiteAlunos" type="xsd:long" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <!-- collection wrapper for alunos -->
+                    <xsd:element name="alunos" minOccurs="1" maxOccurs="1">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="item" type="aluno" minOccurs="1" maxOccurs="unbounded"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="avaliacao">
+                <xsd:sequence>
+                    <xsd:element name="id" type="xsd:uuid" minOccurs="0" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="descNota" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="nota" type="xsd:double" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="dataAvaliacao" type="xsd:date" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:simpleType name="userNotificationKind">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="Operational"/>
+                    <xsd:enumeration value="Management"/>
+                    <xsd:enumeration value="News"/>
+                </xsd:restriction>
+             </xsd:simpleType>
+            <xsd:simpleType name="userNotificationPriority">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="Error"/>
+                    <xsd:enumeration value="Alert"/>
+                    <xsd:enumeration value="None"/>
+                </xsd:restriction>
+             </xsd:simpleType>
+            <xsd:complexType name="notifyUserEventPayload">
+                <xsd:sequence>
+                    <xsd:element name="notificationClass" type="xsd:string" minOccurs="0" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="notificationOrigin" type="xsd:string" minOccurs="0" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="notificationKind" type="userNotificationKind" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="notificationPriority" type="userNotificationPriority" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="notificationSubject" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="notificationContent" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="sourceDomain" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="sourceService" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="destinationUser" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="link" type="xsd:string" minOccurs="0" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:simpleType name="eventEmailFormat">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="HTML"/>
+                    <xsd:enumeration value="PLAIN_TEXT"/>
+                </xsd:restriction>
+             </xsd:simpleType>
+            <xsd:complexType name="emailNotifyUserEventPayload">
+                <xsd:complexContent>
+                    <xsd:extension base="notifyUserEventPayload">
+                        <xsd:sequence>
+                            <xsd:element name="from" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                            </xsd:element>
+                            <!-- collection wrapper for sendTo -->
+                            <xsd:element name="sendTo" minOccurs="0" maxOccurs="1">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="item" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                            <xsd:element name="format" type="eventEmailFormat" minOccurs="0" maxOccurs="1"  readOnly="false">
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:extension>
+                </xsd:complexContent>
+            </xsd:complexType>
+            <xsd:complexType name="pushNotifyUserEventPayload">
+                <xsd:complexContent>
+                    <xsd:extension base="notifyUserEventPayload">
+                        <xsd:sequence>
+                            <xsd:element name="applicationId" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:extension>
+                </xsd:complexContent>
+            </xsd:complexType>
+            <xsd:complexType name="blobReference">
+                <xsd:sequence>
+                    <xsd:element name="domainName" type="xsd:string" minOccurs="0" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="serviceName" type="xsd:string" minOccurs="0" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="targetObjectId" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="targetCopyId" type="xsd:string" minOccurs="0" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="basicErrorPayload">
+                <xsd:sequence>
+                    <xsd:element name="message" type="xsd:string" minOccurs="0" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="errorCode" type="xsd:string" minOccurs="0" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:simpleType name="fieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="BINARY"/>
+                    <xsd:enumeration value="BOOLEAN"/>
+                    <xsd:enumeration value="DATE"/>
+                    <xsd:enumeration value="DATETIME"/>
+                    <xsd:enumeration value="DOUBLE"/>
+                    <xsd:enumeration value="ENUM"/>
+                    <xsd:enumeration value="INTEGER"/>
+                    <xsd:enumeration value="MONEY"/>
+                    <xsd:enumeration value="STRING"/>
+                    <xsd:enumeration value="TIME"/>
+                </xsd:restriction>
+             </xsd:simpleType>
+            <xsd:simpleType name="fileFormat">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CSV"/>
+                    <xsd:enumeration value="FLAT"/>
+                    <xsd:enumeration value="JSON"/>
+                    <xsd:enumeration value="XML"/>
+                </xsd:restriction>
+             </xsd:simpleType>
+            <xsd:simpleType name="hookFunction">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="BEFORE_PARSE"/>
+                    <xsd:enumeration value="BEFORE_CONVERSION"/>
+                    <xsd:enumeration value="ON_ERROR"/>
+                    <xsd:enumeration value="VALIDATE"/>
+                </xsd:restriction>
+             </xsd:simpleType>
+            <xsd:simpleType name="eventType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CHUNK"/>
+                    <xsd:enumeration value="DOWNLOAD"/>
+                    <xsd:enumeration value="ERROR"/>
+                    <xsd:enumeration value="FINISH"/>
+                    <xsd:enumeration value="START"/>
+                </xsd:restriction>
+             </xsd:simpleType>
+            <xsd:simpleType name="errorStrategy">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CALL_SCRIPT"/>
+                    <xsd:enumeration value="IGNORE"/>
+                    <xsd:enumeration value="STOP"/>
+                </xsd:restriction>
+             </xsd:simpleType>
+            <xsd:simpleType name="status">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="DONE"/>
+                    <xsd:enumeration value="DONE_WITH_ERRORS"/>
+                    <xsd:enumeration value="DOWNLOADING"/>
+                    <xsd:enumeration value="ERROR"/>
+                    <xsd:enumeration value="NOT_STARTED"/>
+                    <xsd:enumeration value="RUNNING"/>
+                </xsd:restriction>
+             </xsd:simpleType>
+            <xsd:simpleType name="errorType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CONVERT_ERROR"/>
+                    <xsd:enumeration value="SERVICE_ERROR"/>
+                </xsd:restriction>
+             </xsd:simpleType>
+            <xsd:complexType name="importError">
+                <xsd:sequence>
+                    <xsd:element name="errorType" type="errorType" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="lineNumber" type="xsd:long" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="bean" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="message" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="exceptionClass" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="fielddto">
+                <xsd:sequence>
+                    <xsd:element name="id" type="xsd:long" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="name" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="fieldType" type="fieldType" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="start" type="xsd:long" minOccurs="0" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="size" type="xsd:long" minOccurs="0" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="maskPattern" type="xsd:string" minOccurs="0" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="hookdto">
+                <xsd:sequence>
+                    <xsd:element name="hookFunction" type="hookFunction" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="script" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="layoutdto">
+                <xsd:sequence>
+                    <xsd:element name="id" type="xsd:long" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="description" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="fileFormat" type="fileFormat" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="errorStrategy" type="errorStrategy" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="delimiter" type="xsd:string" minOccurs="0" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="skipLines" type="xsd:long" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <!-- collection wrapper for fields -->
+                    <xsd:element name="fields" minOccurs="1" maxOccurs="1">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="item" type="fielddto" minOccurs="1" maxOccurs="unbounded"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <!-- collection wrapper for hooks -->
+                    <xsd:element name="hooks" minOccurs="0" maxOccurs="1">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="item" type="hookdto" minOccurs="0" maxOccurs="unbounded"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="importReport">
+                <xsd:sequence>
+                    <xsd:element name="id" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="startTime" type="xsd:dateTime" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="endTime" type="xsd:dateTime" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="uri" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="beanClass" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="serviceClass" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="layout" type="layoutdto" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="sucessCount" type="xsd:long" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="errorsCount" type="xsd:long" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="filteredCount" type="xsd:long" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="skippedCount" type="xsd:long" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <!-- collection wrapper for importErrors -->
+                    <xsd:element name="importErrors" minOccurs="0" maxOccurs="1">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="item" type="importError" minOccurs="0" maxOccurs="unbounded"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="exportEventStatus">
+                <xsd:sequence>
+                    <xsd:element name="importerId" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="eventType" type="eventType" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="recordCount" type="xsd:long" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="importEventStatus">
+                <xsd:sequence>
+                    <xsd:element name="importerId" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="eventType" type="eventType" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="status" type="status" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="errorMessage" type="xsd:string" minOccurs="0" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="recordCount" type="xsd:long" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="importReport" type="importReport" minOccurs="0" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="exportConfig">
+                <xsd:sequence>
+                    <xsd:element name="uri" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="layout" type="layoutdto" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="async" type="xsd:boolean" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="errorStrategy" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="importConfig">
+                <xsd:sequence>
+                    <xsd:element name="uri" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="layout" type="layoutdto" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="async" type="xsd:boolean" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="batchSize" type="xsd:long" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="errorStrategy" type="errorStrategy" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="dependency">
+                <xsd:sequence>
+                    <xsd:element name="domain" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="service" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                    <xsd:element name="version" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:simpleType name="uuid">
+                <xsd:restriction base="xsd:string">
+                	<xsd:pattern value="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}" />
+                </xsd:restriction>
+             </xsd:simpleType>
+            
+            <!-- Message payload elements for signals -->
+            
+            <!-- Message input/output elements for commands -->
+            <xsd:element name="updateAvaliacao">
+                <xsd:complexType/>
+            </xsd:element>
+            <xsd:element name="createBulkTurma">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <!-- collection wrapper for entities -->
+                        <xsd:element name="entities" minOccurs="1" maxOccurs="1">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="item" type="turma" minOccurs="1" maxOccurs="unbounded"/>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="createBulkTurmaOutput">
+                <xsd:complexType>
+                    <xsd:sequence>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="retornaMedia">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="idAluno" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="retornaMediaOutput">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="nota" type="xsd:double" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="createMergeTurma">
+                <xsd:complexType/>
+            </xsd:element>
+            <xsd:element name="updateAluno">
+                <xsd:complexType/>
+            </xsd:element>
+            <xsd:element name="updateMergeAvaliacao">
+                <xsd:complexType/>
+            </xsd:element>
+            <xsd:element name="listProfessor">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="offset" type="xsd:long" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                        <xsd:element name="size" type="xsd:long" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                        <xsd:element name="orderBy" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                        <xsd:element name="filter" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                        <!-- collection wrapper for displayFields -->
+                        <xsd:element name="displayFields" minOccurs="1" maxOccurs="1">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="item" type="xsd:string" minOccurs="1" maxOccurs="unbounded"/>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="listProfessorOutput">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <!-- collection wrapper for contents -->
+                        <xsd:element name="contents" minOccurs="1" maxOccurs="1">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="item" type="professor" minOccurs="1" maxOccurs="unbounded"/>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="listTurma">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="offset" type="xsd:long" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                        <xsd:element name="size" type="xsd:long" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                        <xsd:element name="orderBy" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                        <xsd:element name="filter" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                        <!-- collection wrapper for displayFields -->
+                        <xsd:element name="displayFields" minOccurs="1" maxOccurs="1">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="item" type="xsd:string" minOccurs="1" maxOccurs="unbounded"/>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="listTurmaOutput">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <!-- collection wrapper for contents -->
+                        <xsd:element name="contents" minOccurs="1" maxOccurs="1">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="item" type="turma" minOccurs="1" maxOccurs="unbounded"/>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="retornaAlunos">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="idAluno" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="retornaAlunosOutput">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <!-- collection wrapper for alunos -->
+                        <xsd:element name="alunos" minOccurs="1" maxOccurs="1">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="item" type="aluno" minOccurs="1" maxOccurs="unbounded"/>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="listAvaliacao">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="offset" type="xsd:long" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                        <xsd:element name="size" type="xsd:long" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                        <xsd:element name="orderBy" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                        <xsd:element name="filter" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                        <!-- collection wrapper for displayFields -->
+                        <xsd:element name="displayFields" minOccurs="1" maxOccurs="1">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="item" type="xsd:string" minOccurs="1" maxOccurs="unbounded"/>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="listAvaliacaoOutput">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <!-- collection wrapper for contents -->
+                        <xsd:element name="contents" minOccurs="1" maxOccurs="1">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="item" type="avaliacao" minOccurs="1" maxOccurs="unbounded"/>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="exportProfessor">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="config" type="exportConfig" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="exportProfessorOutput">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="exportJobId" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="createBulkAvaliacao">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <!-- collection wrapper for entities -->
+                        <xsd:element name="entities" minOccurs="1" maxOccurs="1">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="item" type="avaliacao" minOccurs="1" maxOccurs="unbounded"/>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="createBulkAvaliacaoOutput">
+                <xsd:complexType>
+                    <xsd:sequence>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="updateMergeProfessor">
+                <xsd:complexType/>
+            </xsd:element>
+            <xsd:element name="exportTurma">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="config" type="exportConfig" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="exportTurmaOutput">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="exportJobId" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="createProfessor">
+                <xsd:complexType/>
+            </xsd:element>
+            <xsd:element name="createBulkAluno">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <!-- collection wrapper for entities -->
+                        <xsd:element name="entities" minOccurs="1" maxOccurs="1">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="item" type="aluno" minOccurs="1" maxOccurs="unbounded"/>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="createBulkAlunoOutput">
+                <xsd:complexType>
+                    <xsd:sequence>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="createAvaliacao">
+                <xsd:complexType/>
+            </xsd:element>
+            <xsd:element name="gravaProfessor">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="id" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="gravaProfessorOutput">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="id" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                        <xsd:element name="status" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="updateProfessor">
+                <xsd:complexType/>
+            </xsd:element>
+            <xsd:element name="exportAvaliacao">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="config" type="exportConfig" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="exportAvaliacaoOutput">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="exportJobId" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="importAluno">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="config" type="importConfig" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="importAlunoOutput">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="importJobId" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="getMetadata">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="metadataFormat" type="xsd:string" minOccurs="0" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="getMetadataOutput">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="metadata" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="retrieveAluno">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="id" type="xsd:uuid" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="retornaProfessores">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="idProfessor" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="retornaProfessoresOutput">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="professor" type="professor" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="createAluno">
+                <xsd:complexType/>
+            </xsd:element>
+            <xsd:element name="getDependencies">
+                <xsd:complexType/>
+            </xsd:element>
+            <xsd:element name="getDependenciesOutput">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <!-- collection wrapper for dependencies -->
+                        <xsd:element name="dependencies" minOccurs="1" maxOccurs="1">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="item" type="dependency" minOccurs="1" maxOccurs="unbounded"/>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="createBulkProfessor">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <!-- collection wrapper for entities -->
+                        <xsd:element name="entities" minOccurs="1" maxOccurs="1">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="item" type="professor" minOccurs="1" maxOccurs="unbounded"/>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="createBulkProfessorOutput">
+                <xsd:complexType>
+                    <xsd:sequence>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="createMergeProfessor">
+                <xsd:complexType/>
+            </xsd:element>
+            <xsd:element name="updateTurma">
+                <xsd:complexType/>
+            </xsd:element>
+            <xsd:element name="exportAluno">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="config" type="exportConfig" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="exportAlunoOutput">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="exportJobId" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="gravaAluno">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="id" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="gravaAlunoOutput">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="id" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                        <xsd:element name="status" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="createMergeAvaliacao">
+                <xsd:complexType/>
+            </xsd:element>
+            <xsd:element name="updateMergeTurma">
+                <xsd:complexType/>
+            </xsd:element>
+            <xsd:element name="listAluno">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="offset" type="xsd:long" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                        <xsd:element name="size" type="xsd:long" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                        <xsd:element name="orderBy" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                        <xsd:element name="filter" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                        <!-- collection wrapper for displayFields -->
+                        <xsd:element name="displayFields" minOccurs="1" maxOccurs="1">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="item" type="xsd:string" minOccurs="1" maxOccurs="unbounded"/>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="listAlunoOutput">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <!-- collection wrapper for contents -->
+                        <xsd:element name="contents" minOccurs="1" maxOccurs="1">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="item" type="aluno" minOccurs="1" maxOccurs="unbounded"/>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="createTurma">
+                <xsd:complexType/>
+            </xsd:element>
+            <xsd:element name="createMergeAluno">
+                <xsd:complexType/>
+            </xsd:element>
+            <xsd:element name="importTurma">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="config" type="importConfig" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="importTurmaOutput">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="importJobId" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="retrieveTurma">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="id" type="xsd:uuid" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="updateMergeAluno">
+                <xsd:complexType/>
+            </xsd:element>
+            <xsd:element name="gravaTurma">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="id" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="gravaTurmaOutput">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="id" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                        <xsd:element name="status" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="deleteAluno">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="id" type="xsd:uuid" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="deleteProfessor">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="id" type="xsd:uuid" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="importAvaliacao">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="config" type="importConfig" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="importAvaliacaoOutput">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="importJobId" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="retrieveProfessor">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="id" type="xsd:uuid" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="deleteAvaliacao">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="id" type="xsd:uuid" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="retrieveAvaliacao">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="id" type="xsd:uuid" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="deleteTurma">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="id" type="xsd:uuid" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="helloWorld">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="who" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="helloWorldOutput">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="helloWorldMessage" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="importProfessor">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="config" type="importConfig" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="importProfessorOutput">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="importJobId" type="xsd:string" minOccurs="1" maxOccurs="1"  readOnly="false">
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </wsdl:types>
+    
+    <wsdl:message name="createBulkTurmaRequest">
+        <wsdl:part name="parameters" element="createBulkTurma"/>
+    </wsdl:message>
+    <wsdl:message name="createBulkTurmaResponse">
+        <wsdl:part name="result" element="createBulkTurmaOutput"/>
+    </wsdl:message>
+    <wsdl:message name="createMergeTurmaRequest">
+        <wsdl:part name="parameters" element="createMergeTurma"/>
+    </wsdl:message>
+    <wsdl:message name="createMergeTurmaResponse">
+        <wsdl:part name="result" element="createMergeTurmaOutput"/>
+    </wsdl:message>
+    <wsdl:message name="updateAlunoRequest">
+        <wsdl:part name="toUpdate" element="updateAluno"/>
+    </wsdl:message>
+    <wsdl:message name="updateAlunoResponse">
+        <wsdl:part name="updated" element="updateAlunoOutput"/>
+    </wsdl:message>
+    <wsdl:message name="listProfessorRequest">
+        <wsdl:part name="pageRequest" element="listProfessor"/>
+    </wsdl:message>
+    <wsdl:message name="listProfessorResponse">
+        <wsdl:part name="pagedResults" element="listProfessorOutput"/>
+    </wsdl:message>
+    <wsdl:message name="listTurmaRequest">
+        <wsdl:part name="pageRequest" element="listTurma"/>
+    </wsdl:message>
+    <wsdl:message name="listTurmaResponse">
+        <wsdl:part name="pagedResults" element="listTurmaOutput"/>
+    </wsdl:message>
+    <wsdl:message name="updateMergeProfessorRequest">
+        <wsdl:part name="parameters" element="updateMergeProfessor"/>
+    </wsdl:message>
+    <wsdl:message name="updateMergeProfessorResponse">
+        <wsdl:part name="result" element="updateMergeProfessorOutput"/>
+    </wsdl:message>
+    <wsdl:message name="exportTurmaRequest">
+        <wsdl:part name="parameters" element="exportTurma"/>
+    </wsdl:message>
+    <wsdl:message name="exportTurmaResponse">
+        <wsdl:part name="result" element="exportTurmaOutput"/>
+    </wsdl:message>
+    <wsdl:message name="createBulkAlunoRequest">
+        <wsdl:part name="parameters" element="createBulkAluno"/>
+    </wsdl:message>
+    <wsdl:message name="createBulkAlunoResponse">
+        <wsdl:part name="result" element="createBulkAlunoOutput"/>
+    </wsdl:message>
+    <wsdl:message name="createAvaliacaoRequest">
+        <wsdl:part name="toCreate" element="createAvaliacao"/>
+    </wsdl:message>
+    <wsdl:message name="createAvaliacaoResponse">
+        <wsdl:part name="created" element="createAvaliacaoOutput"/>
+    </wsdl:message>
+    <wsdl:message name="gravaProfessorRequest">
+        <wsdl:part name="parameters" element="gravaProfessor"/>
+    </wsdl:message>
+    <wsdl:message name="gravaProfessorResponse">
+        <wsdl:part name="result" element="gravaProfessorOutput"/>
+    </wsdl:message>
+    <wsdl:message name="updateProfessorRequest">
+        <wsdl:part name="toUpdate" element="updateProfessor"/>
+    </wsdl:message>
+    <wsdl:message name="updateProfessorResponse">
+        <wsdl:part name="updated" element="updateProfessorOutput"/>
+    </wsdl:message>
+    <wsdl:message name="importAlunoRequest">
+        <wsdl:part name="parameters" element="importAluno"/>
+    </wsdl:message>
+    <wsdl:message name="importAlunoResponse">
+        <wsdl:part name="result" element="importAlunoOutput"/>
+    </wsdl:message>
+    <wsdl:message name="getMetadataRequest">
+        <wsdl:part name="parameters" element="getMetadata"/>
+    </wsdl:message>
+    <wsdl:message name="getMetadataResponse">
+        <wsdl:part name="result" element="getMetadataOutput"/>
+    </wsdl:message>
+    <wsdl:message name="retornaProfessoresRequest">
+        <wsdl:part name="parameters" element="retornaProfessores"/>
+    </wsdl:message>
+    <wsdl:message name="retornaProfessoresResponse">
+        <wsdl:part name="result" element="retornaProfessoresOutput"/>
+    </wsdl:message>
+    <wsdl:message name="createAlunoRequest">
+        <wsdl:part name="toCreate" element="createAluno"/>
+    </wsdl:message>
+    <wsdl:message name="createAlunoResponse">
+        <wsdl:part name="created" element="createAlunoOutput"/>
+    </wsdl:message>
+    <wsdl:message name="updateTurmaRequest">
+        <wsdl:part name="toUpdate" element="updateTurma"/>
+    </wsdl:message>
+    <wsdl:message name="updateTurmaResponse">
+        <wsdl:part name="updated" element="updateTurmaOutput"/>
+    </wsdl:message>
+    <wsdl:message name="gravaAlunoRequest">
+        <wsdl:part name="parameters" element="gravaAluno"/>
+    </wsdl:message>
+    <wsdl:message name="gravaAlunoResponse">
+        <wsdl:part name="result" element="gravaAlunoOutput"/>
+    </wsdl:message>
+    <wsdl:message name="listAlunoRequest">
+        <wsdl:part name="pageRequest" element="listAluno"/>
+    </wsdl:message>
+    <wsdl:message name="listAlunoResponse">
+        <wsdl:part name="pagedResults" element="listAlunoOutput"/>
+    </wsdl:message>
+    <wsdl:message name="createTurmaRequest">
+        <wsdl:part name="toCreate" element="createTurma"/>
+    </wsdl:message>
+    <wsdl:message name="createTurmaResponse">
+        <wsdl:part name="created" element="createTurmaOutput"/>
+    </wsdl:message>
+    <wsdl:message name="createMergeAlunoRequest">
+        <wsdl:part name="parameters" element="createMergeAluno"/>
+    </wsdl:message>
+    <wsdl:message name="createMergeAlunoResponse">
+        <wsdl:part name="result" element="createMergeAlunoOutput"/>
+    </wsdl:message>
+    <wsdl:message name="importTurmaRequest">
+        <wsdl:part name="parameters" element="importTurma"/>
+    </wsdl:message>
+    <wsdl:message name="importTurmaResponse">
+        <wsdl:part name="result" element="importTurmaOutput"/>
+    </wsdl:message>
+    <wsdl:message name="gravaTurmaRequest">
+        <wsdl:part name="parameters" element="gravaTurma"/>
+    </wsdl:message>
+    <wsdl:message name="gravaTurmaResponse">
+        <wsdl:part name="result" element="gravaTurmaOutput"/>
+    </wsdl:message>
+    <wsdl:message name="helloWorldRequest">
+        <wsdl:part name="parameters" element="helloWorld"/>
+    </wsdl:message>
+    <wsdl:message name="helloWorldResponse">
+        <wsdl:part name="result" element="helloWorldOutput"/>
+    </wsdl:message>
+    <wsdl:message name="updateAvaliacaoRequest">
+        <wsdl:part name="toUpdate" element="updateAvaliacao"/>
+    </wsdl:message>
+    <wsdl:message name="updateAvaliacaoResponse">
+        <wsdl:part name="updated" element="updateAvaliacaoOutput"/>
+    </wsdl:message>
+    <wsdl:message name="retornaMediaRequest">
+        <wsdl:part name="parameters" element="retornaMedia"/>
+    </wsdl:message>
+    <wsdl:message name="retornaMediaResponse">
+        <wsdl:part name="result" element="retornaMediaOutput"/>
+    </wsdl:message>
+    <wsdl:message name="updateMergeAvaliacaoRequest">
+        <wsdl:part name="parameters" element="updateMergeAvaliacao"/>
+    </wsdl:message>
+    <wsdl:message name="updateMergeAvaliacaoResponse">
+        <wsdl:part name="result" element="updateMergeAvaliacaoOutput"/>
+    </wsdl:message>
+    <wsdl:message name="retornaAlunosRequest">
+        <wsdl:part name="parameters" element="retornaAlunos"/>
+    </wsdl:message>
+    <wsdl:message name="retornaAlunosResponse">
+        <wsdl:part name="result" element="retornaAlunosOutput"/>
+    </wsdl:message>
+    <wsdl:message name="listAvaliacaoRequest">
+        <wsdl:part name="pageRequest" element="listAvaliacao"/>
+    </wsdl:message>
+    <wsdl:message name="listAvaliacaoResponse">
+        <wsdl:part name="pagedResults" element="listAvaliacaoOutput"/>
+    </wsdl:message>
+    <wsdl:message name="exportProfessorRequest">
+        <wsdl:part name="parameters" element="exportProfessor"/>
+    </wsdl:message>
+    <wsdl:message name="exportProfessorResponse">
+        <wsdl:part name="result" element="exportProfessorOutput"/>
+    </wsdl:message>
+    <wsdl:message name="createBulkAvaliacaoRequest">
+        <wsdl:part name="parameters" element="createBulkAvaliacao"/>
+    </wsdl:message>
+    <wsdl:message name="createBulkAvaliacaoResponse">
+        <wsdl:part name="result" element="createBulkAvaliacaoOutput"/>
+    </wsdl:message>
+    <wsdl:message name="createProfessorRequest">
+        <wsdl:part name="toCreate" element="createProfessor"/>
+    </wsdl:message>
+    <wsdl:message name="createProfessorResponse">
+        <wsdl:part name="created" element="createProfessorOutput"/>
+    </wsdl:message>
+    <wsdl:message name="exportAvaliacaoRequest">
+        <wsdl:part name="parameters" element="exportAvaliacao"/>
+    </wsdl:message>
+    <wsdl:message name="exportAvaliacaoResponse">
+        <wsdl:part name="result" element="exportAvaliacaoOutput"/>
+    </wsdl:message>
+    <wsdl:message name="retrieveAlunoRequest">
+        <wsdl:part name="toRetrieve" element="retrieveAluno"/>
+    </wsdl:message>
+    <wsdl:message name="retrieveAlunoResponse">
+        <wsdl:part name="retrieved" element="retrieveAlunoOutput"/>
+    </wsdl:message>
+    <wsdl:message name="getDependenciesRequest">
+        <wsdl:part name="parameters" element="getDependencies"/>
+    </wsdl:message>
+    <wsdl:message name="getDependenciesResponse">
+        <wsdl:part name="result" element="getDependenciesOutput"/>
+    </wsdl:message>
+    <wsdl:message name="createBulkProfessorRequest">
+        <wsdl:part name="parameters" element="createBulkProfessor"/>
+    </wsdl:message>
+    <wsdl:message name="createBulkProfessorResponse">
+        <wsdl:part name="result" element="createBulkProfessorOutput"/>
+    </wsdl:message>
+    <wsdl:message name="createMergeProfessorRequest">
+        <wsdl:part name="parameters" element="createMergeProfessor"/>
+    </wsdl:message>
+    <wsdl:message name="createMergeProfessorResponse">
+        <wsdl:part name="result" element="createMergeProfessorOutput"/>
+    </wsdl:message>
+    <wsdl:message name="exportAlunoRequest">
+        <wsdl:part name="parameters" element="exportAluno"/>
+    </wsdl:message>
+    <wsdl:message name="exportAlunoResponse">
+        <wsdl:part name="result" element="exportAlunoOutput"/>
+    </wsdl:message>
+    <wsdl:message name="createMergeAvaliacaoRequest">
+        <wsdl:part name="parameters" element="createMergeAvaliacao"/>
+    </wsdl:message>
+    <wsdl:message name="createMergeAvaliacaoResponse">
+        <wsdl:part name="result" element="createMergeAvaliacaoOutput"/>
+    </wsdl:message>
+    <wsdl:message name="updateMergeTurmaRequest">
+        <wsdl:part name="parameters" element="updateMergeTurma"/>
+    </wsdl:message>
+    <wsdl:message name="updateMergeTurmaResponse">
+        <wsdl:part name="result" element="updateMergeTurmaOutput"/>
+    </wsdl:message>
+    <wsdl:message name="retrieveTurmaRequest">
+        <wsdl:part name="toRetrieve" element="retrieveTurma"/>
+    </wsdl:message>
+    <wsdl:message name="retrieveTurmaResponse">
+        <wsdl:part name="retrieved" element="retrieveTurmaOutput"/>
+    </wsdl:message>
+    <wsdl:message name="updateMergeAlunoRequest">
+        <wsdl:part name="parameters" element="updateMergeAluno"/>
+    </wsdl:message>
+    <wsdl:message name="updateMergeAlunoResponse">
+        <wsdl:part name="result" element="updateMergeAlunoOutput"/>
+    </wsdl:message>
+    <wsdl:message name="deleteAlunoRequest">
+        <wsdl:part name="toDelete" element="deleteAluno"/>
+    </wsdl:message>
+    <wsdl:message name="deleteProfessorRequest">
+        <wsdl:part name="toDelete" element="deleteProfessor"/>
+    </wsdl:message>
+    <wsdl:message name="importAvaliacaoRequest">
+        <wsdl:part name="parameters" element="importAvaliacao"/>
+    </wsdl:message>
+    <wsdl:message name="importAvaliacaoResponse">
+        <wsdl:part name="result" element="importAvaliacaoOutput"/>
+    </wsdl:message>
+    <wsdl:message name="retrieveProfessorRequest">
+        <wsdl:part name="toRetrieve" element="retrieveProfessor"/>
+    </wsdl:message>
+    <wsdl:message name="retrieveProfessorResponse">
+        <wsdl:part name="retrieved" element="retrieveProfessorOutput"/>
+    </wsdl:message>
+    <wsdl:message name="deleteAvaliacaoRequest">
+        <wsdl:part name="toDelete" element="deleteAvaliacao"/>
+    </wsdl:message>
+    <wsdl:message name="retrieveAvaliacaoRequest">
+        <wsdl:part name="toRetrieve" element="retrieveAvaliacao"/>
+    </wsdl:message>
+    <wsdl:message name="retrieveAvaliacaoResponse">
+        <wsdl:part name="retrieved" element="retrieveAvaliacaoOutput"/>
+    </wsdl:message>
+    <wsdl:message name="deleteTurmaRequest">
+        <wsdl:part name="toDelete" element="deleteTurma"/>
+    </wsdl:message>
+    <wsdl:message name="importProfessorRequest">
+        <wsdl:part name="parameters" element="importProfessor"/>
+    </wsdl:message>
+    <wsdl:message name="importProfessorResponse">
+        <wsdl:part name="result" element="importProfessorOutput"/>
+    </wsdl:message>
+    
+    <wsdl:portType name="basicoPortType">
+        <wsdl:operation name="createBulkTurma">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            The 'createBulk' request primitive for the Turma entity. 
+            </wsdl:documentation>
+            <wsdl:input message="createBulkTurmaRequest"/>
+            <wsdl:output message="createBulkTurmaResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="createMergeTurma">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            The 'createMerge' request primitive for the Turma entity. 
+            </wsdl:documentation>
+            <wsdl:input message="createMergeTurmaRequest"/>
+            <wsdl:output message="createMergeTurmaResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="updateAluno">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            The 'update' request primitive for the Aluno entity. 
+            </wsdl:documentation>
+            <wsdl:input message="updateAlunoRequest"/>
+            <wsdl:output message="updateAlunoResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="listProfessor">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            The 'list' request primitive for the Professor entity. 
+            </wsdl:documentation>
+            <wsdl:input message="listProfessorRequest"/>
+            <wsdl:output message="listProfessorResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="listTurma">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            The 'list' request primitive for the Turma entity. 
+            </wsdl:documentation>
+            <wsdl:input message="listTurmaRequest"/>
+            <wsdl:output message="listTurmaResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="updateMergeProfessor">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            The 'updateMerge' request primitive for the Professor entity. 
+            </wsdl:documentation>
+            <wsdl:input message="updateMergeProfessorRequest"/>
+            <wsdl:output message="updateMergeProfessorResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="exportTurma">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            </wsdl:documentation>
+            <wsdl:input message="exportTurmaRequest"/>
+            <wsdl:output message="exportTurmaResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="createBulkAluno">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            The 'createBulk' request primitive for the Aluno entity. 
+            </wsdl:documentation>
+            <wsdl:input message="createBulkAlunoRequest"/>
+            <wsdl:output message="createBulkAlunoResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="createAvaliacao">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            The 'create' request primitive for the Avaliacao entity. 
+            </wsdl:documentation>
+            <wsdl:input message="createAvaliacaoRequest"/>
+            <wsdl:output message="createAvaliacaoResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="gravaProfessor">
+            <wsdl:documentation>
+            WARNING: THIS OPERATION IS PRIVATE AND MAY HAVE ITS BEHAVIOR CHANGED AT ANY TIME WITHOUT NOTICE. 
+            Grava Professor 
+            </wsdl:documentation>
+            <wsdl:input message="gravaProfessorRequest"/>
+            <wsdl:output message="gravaProfessorResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="updateProfessor">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            The 'update' request primitive for the Professor entity. 
+            </wsdl:documentation>
+            <wsdl:input message="updateProfessorRequest"/>
+            <wsdl:output message="updateProfessorResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="importAluno">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            </wsdl:documentation>
+            <wsdl:input message="importAlunoRequest"/>
+            <wsdl:output message="importAlunoResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="getMetadata">
+            <wsdl:documentation>
+            WARNING: THIS OPERATION IS PRIVATE AND MAY HAVE ITS BEHAVIOR CHANGED AT ANY TIME WITHOUT NOTICE. 
+            Default 'getMetadata' query. Every service must handle this command and return metadata in the format requested. 
+            </wsdl:documentation>
+            <wsdl:input message="getMetadataRequest"/>
+            <wsdl:output message="getMetadataResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="retornaProfessores">
+            <wsdl:documentation>
+            WARNING: THIS OPERATION IS PRIVATE AND MAY HAVE ITS BEHAVIOR CHANGED AT ANY TIME WITHOUT NOTICE. 
+            </wsdl:documentation>
+            <wsdl:input message="retornaProfessoresRequest"/>
+            <wsdl:output message="retornaProfessoresResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="createAluno">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            The 'create' request primitive for the Aluno entity. 
+            </wsdl:documentation>
+            <wsdl:input message="createAlunoRequest"/>
+            <wsdl:output message="createAlunoResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="updateTurma">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            The 'update' request primitive for the Turma entity. 
+            </wsdl:documentation>
+            <wsdl:input message="updateTurmaRequest"/>
+            <wsdl:output message="updateTurmaResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="gravaAluno">
+            <wsdl:documentation>
+            WARNING: THIS OPERATION IS PRIVATE AND MAY HAVE ITS BEHAVIOR CHANGED AT ANY TIME WITHOUT NOTICE. 
+            Grava Aluno 
+            </wsdl:documentation>
+            <wsdl:input message="gravaAlunoRequest"/>
+            <wsdl:output message="gravaAlunoResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="listAluno">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            The 'list' request primitive for the Aluno entity. 
+            </wsdl:documentation>
+            <wsdl:input message="listAlunoRequest"/>
+            <wsdl:output message="listAlunoResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="createTurma">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            The 'create' request primitive for the Turma entity. 
+            </wsdl:documentation>
+            <wsdl:input message="createTurmaRequest"/>
+            <wsdl:output message="createTurmaResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="createMergeAluno">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            The 'createMerge' request primitive for the Aluno entity. 
+            </wsdl:documentation>
+            <wsdl:input message="createMergeAlunoRequest"/>
+            <wsdl:output message="createMergeAlunoResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="importTurma">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            </wsdl:documentation>
+            <wsdl:input message="importTurmaRequest"/>
+            <wsdl:output message="importTurmaResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="gravaTurma">
+            <wsdl:documentation>
+            WARNING: THIS OPERATION IS PRIVATE AND MAY HAVE ITS BEHAVIOR CHANGED AT ANY TIME WITHOUT NOTICE. 
+            Grava Turma 
+            </wsdl:documentation>
+            <wsdl:input message="gravaTurmaRequest"/>
+            <wsdl:output message="gravaTurmaResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="helloWorld">
+            <wsdl:documentation>
+            WARNING: THIS OPERATION IS PRIVATE AND MAY HAVE ITS BEHAVIOR CHANGED AT ANY TIME WITHOUT NOTICE. 
+            </wsdl:documentation>
+            <wsdl:input message="helloWorldRequest"/>
+            <wsdl:output message="helloWorldResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="updateAvaliacao">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            The 'update' request primitive for the Avaliacao entity. 
+            </wsdl:documentation>
+            <wsdl:input message="updateAvaliacaoRequest"/>
+            <wsdl:output message="updateAvaliacaoResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="retornaMedia">
+            <wsdl:documentation>
+            WARNING: THIS OPERATION IS PRIVATE AND MAY HAVE ITS BEHAVIOR CHANGED AT ANY TIME WITHOUT NOTICE. 
+            </wsdl:documentation>
+            <wsdl:input message="retornaMediaRequest"/>
+            <wsdl:output message="retornaMediaResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="updateMergeAvaliacao">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            The 'updateMerge' request primitive for the Avaliacao entity. 
+            </wsdl:documentation>
+            <wsdl:input message="updateMergeAvaliacaoRequest"/>
+            <wsdl:output message="updateMergeAvaliacaoResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="retornaAlunos">
+            <wsdl:documentation>
+            WARNING: THIS OPERATION IS PRIVATE AND MAY HAVE ITS BEHAVIOR CHANGED AT ANY TIME WITHOUT NOTICE. 
+            </wsdl:documentation>
+            <wsdl:input message="retornaAlunosRequest"/>
+            <wsdl:output message="retornaAlunosResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="listAvaliacao">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            The 'list' request primitive for the Avaliacao entity. 
+            </wsdl:documentation>
+            <wsdl:input message="listAvaliacaoRequest"/>
+            <wsdl:output message="listAvaliacaoResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="exportProfessor">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            </wsdl:documentation>
+            <wsdl:input message="exportProfessorRequest"/>
+            <wsdl:output message="exportProfessorResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="createBulkAvaliacao">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            The 'createBulk' request primitive for the Avaliacao entity. 
+            </wsdl:documentation>
+            <wsdl:input message="createBulkAvaliacaoRequest"/>
+            <wsdl:output message="createBulkAvaliacaoResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="createProfessor">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            The 'create' request primitive for the Professor entity. 
+            </wsdl:documentation>
+            <wsdl:input message="createProfessorRequest"/>
+            <wsdl:output message="createProfessorResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="exportAvaliacao">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            </wsdl:documentation>
+            <wsdl:input message="exportAvaliacaoRequest"/>
+            <wsdl:output message="exportAvaliacaoResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="retrieveAluno">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            The 'retrieve' request primitive for the Aluno entity. 
+            </wsdl:documentation>
+            <wsdl:input message="retrieveAlunoRequest"/>
+            <wsdl:output message="retrieveAlunoResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="getDependencies">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            Returns a list with all dependencies from this service, along with their respective versions 
+            </wsdl:documentation>
+            <wsdl:input message="getDependenciesRequest"/>
+            <wsdl:output message="getDependenciesResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="createBulkProfessor">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            The 'createBulk' request primitive for the Professor entity. 
+            </wsdl:documentation>
+            <wsdl:input message="createBulkProfessorRequest"/>
+            <wsdl:output message="createBulkProfessorResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="createMergeProfessor">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            The 'createMerge' request primitive for the Professor entity. 
+            </wsdl:documentation>
+            <wsdl:input message="createMergeProfessorRequest"/>
+            <wsdl:output message="createMergeProfessorResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="exportAluno">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            </wsdl:documentation>
+            <wsdl:input message="exportAlunoRequest"/>
+            <wsdl:output message="exportAlunoResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="createMergeAvaliacao">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            The 'createMerge' request primitive for the Avaliacao entity. 
+            </wsdl:documentation>
+            <wsdl:input message="createMergeAvaliacaoRequest"/>
+            <wsdl:output message="createMergeAvaliacaoResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="updateMergeTurma">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            The 'updateMerge' request primitive for the Turma entity. 
+            </wsdl:documentation>
+            <wsdl:input message="updateMergeTurmaRequest"/>
+            <wsdl:output message="updateMergeTurmaResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="retrieveTurma">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            The 'retrieve' request primitive for the Turma entity. 
+            </wsdl:documentation>
+            <wsdl:input message="retrieveTurmaRequest"/>
+            <wsdl:output message="retrieveTurmaResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="updateMergeAluno">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            The 'updateMerge' request primitive for the Aluno entity. 
+            </wsdl:documentation>
+            <wsdl:input message="updateMergeAlunoRequest"/>
+            <wsdl:output message="updateMergeAlunoResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="deleteAluno">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            The 'delete' request primitive for the Aluno entity. 
+            </wsdl:documentation>
+            <wsdl:input message="deleteAlunoRequest"/>
+            <wsdl:output message="deleteAlunoResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="deleteProfessor">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            The 'delete' request primitive for the Professor entity. 
+            </wsdl:documentation>
+            <wsdl:input message="deleteProfessorRequest"/>
+            <wsdl:output message="deleteProfessorResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="importAvaliacao">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            </wsdl:documentation>
+            <wsdl:input message="importAvaliacaoRequest"/>
+            <wsdl:output message="importAvaliacaoResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="retrieveProfessor">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            The 'retrieve' request primitive for the Professor entity. 
+            </wsdl:documentation>
+            <wsdl:input message="retrieveProfessorRequest"/>
+            <wsdl:output message="retrieveProfessorResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="deleteAvaliacao">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            The 'delete' request primitive for the Avaliacao entity. 
+            </wsdl:documentation>
+            <wsdl:input message="deleteAvaliacaoRequest"/>
+            <wsdl:output message="deleteAvaliacaoResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="retrieveAvaliacao">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            The 'retrieve' request primitive for the Avaliacao entity. 
+            </wsdl:documentation>
+            <wsdl:input message="retrieveAvaliacaoRequest"/>
+            <wsdl:output message="retrieveAvaliacaoResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="deleteTurma">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            The 'delete' request primitive for the Turma entity. 
+            </wsdl:documentation>
+            <wsdl:input message="deleteTurmaRequest"/>
+            <wsdl:output message="deleteTurmaResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="importProfessor">
+            <wsdl:documentation>
+            THIS OPERATION IS PUBLIC. 
+            </wsdl:documentation>
+            <wsdl:input message="importProfessorRequest"/>
+            <wsdl:output message="importProfessorResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    
+    <wsdl:binding name="basicoSoapBinding" type="basicoPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="createBulkTurma">
+            <soap:operation soapAction="createBulkTurma"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="createMergeTurma">
+            <soap:operation soapAction="createMergeTurma"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="updateAluno">
+            <soap:operation soapAction="updateAluno"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="listProfessor">
+            <soap:operation soapAction="listProfessor"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="listTurma">
+            <soap:operation soapAction="listTurma"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="updateMergeProfessor">
+            <soap:operation soapAction="updateMergeProfessor"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="exportTurma">
+            <soap:operation soapAction="exportTurma"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="createBulkAluno">
+            <soap:operation soapAction="createBulkAluno"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="createAvaliacao">
+            <soap:operation soapAction="createAvaliacao"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="gravaProfessor">
+            <soap:operation soapAction="gravaProfessor"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="updateProfessor">
+            <soap:operation soapAction="updateProfessor"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="importAluno">
+            <soap:operation soapAction="importAluno"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getMetadata">
+            <soap:operation soapAction="getMetadata"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="retornaProfessores">
+            <soap:operation soapAction="retornaProfessores"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="createAluno">
+            <soap:operation soapAction="createAluno"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="updateTurma">
+            <soap:operation soapAction="updateTurma"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="gravaAluno">
+            <soap:operation soapAction="gravaAluno"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="listAluno">
+            <soap:operation soapAction="listAluno"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="createTurma">
+            <soap:operation soapAction="createTurma"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="createMergeAluno">
+            <soap:operation soapAction="createMergeAluno"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="importTurma">
+            <soap:operation soapAction="importTurma"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="gravaTurma">
+            <soap:operation soapAction="gravaTurma"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="helloWorld">
+            <soap:operation soapAction="helloWorld"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="updateAvaliacao">
+            <soap:operation soapAction="updateAvaliacao"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="retornaMedia">
+            <soap:operation soapAction="retornaMedia"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="updateMergeAvaliacao">
+            <soap:operation soapAction="updateMergeAvaliacao"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="retornaAlunos">
+            <soap:operation soapAction="retornaAlunos"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="listAvaliacao">
+            <soap:operation soapAction="listAvaliacao"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="exportProfessor">
+            <soap:operation soapAction="exportProfessor"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="createBulkAvaliacao">
+            <soap:operation soapAction="createBulkAvaliacao"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="createProfessor">
+            <soap:operation soapAction="createProfessor"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="exportAvaliacao">
+            <soap:operation soapAction="exportAvaliacao"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="retrieveAluno">
+            <soap:operation soapAction="retrieveAluno"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getDependencies">
+            <soap:operation soapAction="getDependencies"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="createBulkProfessor">
+            <soap:operation soapAction="createBulkProfessor"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="createMergeProfessor">
+            <soap:operation soapAction="createMergeProfessor"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="exportAluno">
+            <soap:operation soapAction="exportAluno"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="createMergeAvaliacao">
+            <soap:operation soapAction="createMergeAvaliacao"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="updateMergeTurma">
+            <soap:operation soapAction="updateMergeTurma"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="retrieveTurma">
+            <soap:operation soapAction="retrieveTurma"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="updateMergeAluno">
+            <soap:operation soapAction="updateMergeAluno"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="deleteAluno">
+            <soap:operation soapAction="deleteAluno"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="deleteProfessor">
+            <soap:operation soapAction="deleteProfessor"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="importAvaliacao">
+            <soap:operation soapAction="importAvaliacao"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="retrieveProfessor">
+            <soap:operation soapAction="retrieveProfessor"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="deleteAvaliacao">
+            <soap:operation soapAction="deleteAvaliacao"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="retrieveAvaliacao">
+            <soap:operation soapAction="retrieveAvaliacao"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="deleteTurma">
+            <soap:operation soapAction="deleteTurma"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="importProfessor">
+            <soap:operation soapAction="importProfessor"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    
+    <wsdl:service name="basico">
+        <wsdl:documentation>
+        </wsdl:documentation>
+        <wsdl:port name="basicoPort" binding="basicoSoapBinding">
+            <soap:address location="${serviceURI}"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

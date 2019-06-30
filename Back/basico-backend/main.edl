@@ -1,0 +1,35 @@
+domain furb
+
+entities {
+	generateExtraResources : true
+    securityType : secure
+	enumType : ordinal
+}
+
+service basico {
+	entities{
+		entity professor{
+			relationships{
+				OneToMany(turmas){
+					type: aggregation
+				}							
+			}
+		}
+		entity aluno{
+			relationships{
+				OneToMany(notas){
+					type: aggregation
+				}							
+			}
+		}
+				
+		entity turma{
+			relationships{
+				OneToMany(alunos){
+					type: aggregation
+				}							
+			}
+		}
+			
+	}
+}

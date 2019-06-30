@@ -1,0 +1,152 @@
+domain furb
+
+service basico {
+    endpoints {
+        // add actions, queries, events and signals here
+        query helloWorld {
+            in {
+                who : string
+            }
+            out {
+                helloWorldMessage : string
+            }
+        }
+        
+        query retornaMedia {
+            in {
+                "ID do aluno"
+                idAluno : string
+            }
+            out {
+                nota: double 
+            }
+        }
+        
+        query retornaAlunos {
+            in {
+        		"ID do aluno"
+                idAluno : string
+            }
+            out {
+                alunos: aluno*
+            }
+        }
+        
+        query retornaProfessores {
+            in {
+        		"ID do professor"
+                idProfessor : string
+            }
+            out {
+                professor: professor
+            }
+        }
+        
+        "Grava Professor"
+        action gravaProfessor{
+            in{
+                "Id professor a ser gravado"
+                id: string
+            }
+            out{
+                "identificador do professor"
+                id: string 
+                "status do professor"
+                status: string
+            }
+        }
+        
+        "Grava Aluno"
+        action gravaAluno{
+            in{
+                "Id Aluno a ser gravado"
+                id: string
+            }
+            out{
+                "identificador do aluno"
+                id: string 
+                "status do aluno"
+                status: string
+            }
+        }
+        
+        "Grava Turma"
+        action gravaTurma{
+            in{
+                "Id Turma a ser gravado"
+                id: string
+            }
+            out{
+                "identificador do turma"
+                id: string 
+                "status do turma"
+                status: string
+            }
+        }
+    }
+        
+    entities {
+	    "Entidade que representa o professor"
+		fixed entity professor{
+		    "Chave primaria"
+		    id: uuid?
+		    "Nome do professor"
+		    nome: string
+		    "Data de nascimento"
+		    dataNascimento: date
+		    "Data de contratação"
+		    dataContratacao: date
+		    "Salário"
+		    salario: double
+		     "Lista de turmas"
+		    turmas: turma*
+		}
+		
+		"Entidade que representa o aluno"
+		fixed entity aluno{
+		    "Chave primaria"
+		    id: uuid?
+		    "Nome do aluno"
+		    nome: string
+		    "Data de nascimento"
+		    dataNascimento: date
+		    "Data de início"
+		    dataInicio: date
+		    "Notas"
+			notas: avaliacao*
+		}
+		
+		"Entidade que representa o turma"
+		fixed entity turma{
+		    "Chave primaria"
+		    id: uuid?
+		    "Descrição da turma"
+		    descTurma: string
+		    "Horário"
+		    horario: time
+		    "Valor da mensalidade"
+		    valorMensalidade: double
+		    "Limite de alunos"
+		    limiteAlunos: integer
+		    "Lista de alunos"
+		    alunos: aluno*
+		    
+		}
+		
+		"Entidade que representa o avaliação"
+		fixed entity avaliacao {
+		    "Chave primaria"
+		    id: uuid?
+		    "Descrição da avaliação"
+		    descNota: string
+		    "Nota"
+		    nota: double
+		    "data"
+		    dataAvaliacao: date
+		}		
+	
+	}
+        
+        
+		
+}

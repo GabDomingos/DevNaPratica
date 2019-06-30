@@ -1,0 +1,8 @@
+<!-- GENERATED ENTITIES: 2019-06-30 16:05:57:660 -->
+<class>br.com.senior.furb.basico.ProfessorEntity</class>
+<class>br.com.senior.furb.basico.Professor_TurmasEntity</class>
+<class>br.com.senior.furb.basico.AlunoEntity</class>
+<class>br.com.senior.furb.basico.Aluno_NotasEntity</class>
+<class>br.com.senior.furb.basico.TurmaEntity</class>
+<class>br.com.senior.furb.basico.Turma_AlunosEntity</class>
+<class>br.com.senior.furb.basico.AvaliacaoEntity</class>
