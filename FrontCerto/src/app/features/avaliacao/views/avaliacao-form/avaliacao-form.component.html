@@ -1,0 +1,46 @@
+<div class=" ui-g-12 ui-md-12 ui-lg-12 ui-xl-12">
+  <p-toast [style]="{marginTop: '80px'}" position="top-right" key="form-toast"></p-toast>
+  <p-card class="centralized">
+    <p-header class="header-card-form">
+      <div class="ui-helper-clearfix title-card-header">
+        <span class="ui-panel-title">Adicionar nova avaliacao</span>
+      </div>
+    </p-header>
+  <form [formGroup]="avaliacaoForm" >
+    <div class="">
+      <div class="ui-g ui-fluid">
+        <div class="ui-g-12 ui-md-12 ui-lg-12">
+          <label class="required" for="itemName">Descrição da Avaliacao:</label>
+          <div class="ui-inputgroup">
+            <input #nomeFormInput type="text" id="descricao" name="descricao" pInputText formControlName="descricao" autocomplete="off" placeholder="Ex: Fulano do tal"/>
+          </div>
+        </div>
+
+        <div class="ui-g-12 ui-md-6 ui-lg-4">
+          <label for="itemName">Data de Avaliacao</label>
+          <i tooltipPosition="top" class="pi pi-calendar-times outOfDate"></i>
+          <div class="ui-inputgroup">
+            <p-calendar formControlName="dtAvaliacao" dateFormat="dd/mm/yy"></p-calendar>
+          </div>
+        </div>
+
+        <div class="ui-g-12 ui-md-6 ui-lg-4">
+          <label for="itemName">Nota</label>
+          <i tooltipPosition="top" class="pi pi-calendar-times outOfDate"></i>
+          <div class="ui-inputgroup">
+            <input #notaFormInput type="text" id="nota" name="nota" pInputText formControlName="nota" autocomplete="off" placeholder="Ex: 10"/>
+          </div>
+        </div>
+
+      </div>
+      <p-footer>
+        <div class="group-button">
+          <button pButton type="button" (click)="onSave()" label="Salvar" class="ui-button-raised ui-button-success"></button>
+          <button pButton type="button" (click)="onCancel()" label="Cancelar" class="ui-button-raised ui-button-danger"></button>
+        </div>
+      </p-footer>
+    </div>
+  </form>
+</p-card>
+</div>
+

@@ -1,0 +1,54 @@
+<div class=" ui-g-12 ui-md-12 ui-lg-12 ui-xl-12">
+  <p-toast [style]="{marginTop: '80px'}" position="top-right" key="form-toast"></p-toast>
+  <p-card class="centralized">
+    <p-header class="header-card-form">
+      <div class="ui-helper-clearfix title-card-header">
+        <span class="ui-panel-title">Adicionar novo professor</span>
+      </div>
+    </p-header>
+  <form [formGroup]="professorForm" >
+    <div class="">
+      <div class="ui-g ui-fluid">
+        <div class="ui-g-12 ui-md-12 ui-lg-12">
+          <label class="required" for="itemName">Nome do Professor:</label>
+          <div class="ui-inputgroup">
+            <input #nomeFormInput type="text" id="nome" name="nome" pInputText formControlName="nome" autocomplete="off" placeholder="Ex: Fulano de tal"/>
+          </div>
+        </div>
+
+        <div class="ui-g-12 ui-md-6 ui-lg-4">
+          <label for="itemName">Data de Nascimento</label>
+          <i tooltipPosition="top" class="pi pi-calendar-times outOfDate"></i>
+          <div class="ui-inputgroup">
+            <p-calendar formControlName="dtNascimento" dateFormat="dd/mm/yy"></p-calendar>
+          </div>
+        </div>
+
+        <div class="ui-g-12 ui-md-6 ui-lg-4">
+          <label for="itemName">Data de Contratação</label>
+          <i tooltipPosition="top" class="pi pi-calendar-times outOfDate"></i>
+          <div class="ui-inputgroup">
+            <p-calendar formControlName="dtContratacao" dateFormat="dd/mm/yy"></p-calendar>
+          </div>
+        </div>
+
+        <div class="ui-g-12 ui-md-6 ui-lg-4">
+          <label for="itemName">Salario</label>
+          <i *ngIf="outOfDate" pTooltip="Produto Vencido!" tooltipPosition="top" class="pi pi-calendar-times outOfDate"></i>
+          <div class="ui-inputgroup">
+            <input #cpfFormInput type="text" id="salario" name="salario" pInputText formControlName="salario" autocomplete="off" placeholder="Ex: 100"/>
+          </div>
+        </div>
+
+      </div>
+      <p-footer>
+        <div class="group-button">
+          <button pButton type="button" (click)="onSave()" label="Salvar" class="ui-button-raised ui-button-success"></button>
+          <button pButton type="button" (click)="onCancel()" label="Cancelar" class="ui-button-raised ui-button-danger"></button>
+        </div>
+      </p-footer>
+    </div>
+  </form>
+</p-card>
+</div>
+
