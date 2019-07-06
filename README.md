@@ -1,4 +1,4 @@
-# DevNaPratica
+# DevNaPratica - Gabriel Domingos, Peterson Boni e Rafael Rossi
 Sistema para Gestão de Escola de Língua Inglesa
 
 Entidades:
